@@ -1,0 +1,2 @@
+curl "https://asset-polygon-loading.power-of-tech.com/publish_kh3m6hfbshlc8su6/selector/V005/d4576bd23c89d00f9a06.bin?t=1&c=0&w=4cdc08af4f1078fd9d7974b1ee237e1654942c8baf0e30b77314d050b1e35351" -L --header "User-Agent: UnityPlayer/2019.4.40f1 (UnityWebRequest/1.0, libcurl/7.80.0-DEV)" --header "Host: asset-polygon-loading.power-of-tech.com:443" --header "Proxy-Connection: Keep-Alive" -o ModelList.json
+pause
