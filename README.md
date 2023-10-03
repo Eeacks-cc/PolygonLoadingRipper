@@ -2,7 +2,7 @@
 
 我使用了 [这张地图](https://vrchat.com/home/world/wrld_057b9b0f-a9c1-4f3c-b002-058a658e2217) 作为调试目标，逆向工程了其中的Polygon Loading
 
-它可以从下载的模型文件中转储出对应的Mesh。
+它可以从下载的模型文件中转储出对应的Mesh以及自动分组SubMesh，这将允许你正确给每个部位添加正确的贴图。
 
 ![原模型](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_KGHca1eHDm.png)
 
