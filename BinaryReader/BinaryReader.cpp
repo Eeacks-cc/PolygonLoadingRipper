@@ -135,13 +135,13 @@ int main()
 
     // "A==" = 3
     iMeshEnd += 2;
-    if (sContent[iMeshEnd + 1] == '=')
+    if (sContent[iMeshEnd] == '=')
     {
         iMeshEnd++;
     }
 
     std::string sMesh = sContent.substr(0, iMeshEnd);
-
+    
     macaron::Base64 pBase64;
     std::vector<unsigned char> vMeshData;
     
