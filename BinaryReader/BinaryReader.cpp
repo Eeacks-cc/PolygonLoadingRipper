@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <sstream>
 #include <Windows.h>
 
 #include "json.hpp"
@@ -74,6 +75,12 @@ int main()
         return 0;
     }
 
+    int iFileName = sFilePath.find_last_of("\\/");
+    std::string sDirectory = sFilePath.substr(0, iFileName + 1);
+
+    std::string sOutputFilePath = sDirectory + sFilePath.substr(iFileName + 1) + ".obj";
+    std::string sShaderOutputFilePath = sDirectory + sFilePath.substr(iFileName + 1) + ".shaderInfo.txt";
+
     fseek(hFile, 0, SEEK_END);
     int iSize = ftell(hFile);
     fseek(hFile, 0, SEEK_SET);
@@ -97,10 +104,11 @@ int main()
     std::string sRawFile = std::string((char*)pContent);
     VirtualFree(pContent, 0x0, MEM_DECOMMIT);
 
+    std::cout << "Preparing ModelInfo" << std::endl;
     int iJsonBegin = sRawFile.find_first_of('{');
     if (iJsonBegin == std::string::npos)
     {
-        std::cout << "Model description not found in data" << std::endl;
+        std::cout << "ModelInfo not found in data" << std::endl;
         return 0;
     }
 
@@ -115,8 +123,10 @@ int main()
 
     std::string sModelInfo = sRawFile.substr(iJsonBegin, iJsonEnd - iJsonBegin);
 
+    std::cout << "Preparing JSON" << std::endl;
     pJson = nlohmann::json::parse(sModelInfo);
     
+    std::cout << "Preparing Content" << std::endl;
     int iContentBegin = sRawFile.find("AA");
     if (iContentBegin == std::string::npos)
     {
@@ -124,8 +134,11 @@ int main()
         return 0;
     }
 
+    std::string ;
+
     std::string sContent = sRawFile.substr(iContentBegin);
    
+    std::cout << "Preparing MeshInfo" << std::endl;
     int iMeshEnd = sContent.find("A=");
     if (iMeshEnd == std::string::npos)
     {
@@ -142,6 +155,37 @@ int main()
 
     std::string sMesh = sContent.substr(0, iMeshEnd);
     
+    std::cout << "Preparing ShaderData" << std::endl;
+    std::string sShaderData = sRawFile.substr(iJsonEnd, iContentBegin - iJsonEnd);
+    std::vector<std::string> vShaderData;
+    if (!sShaderData.empty())
+    {
+        std::stringstream ss(sShaderData);
+        std::string sSplit;
+        while (std::getline(ss, sSplit, ','))
+        {
+            vShaderData.push_back(sSplit);
+        }
+        FILE* fShaderInfo = fopen(sShaderOutputFilePath.c_str(), "w");
+        if (fShaderInfo)
+        {
+            for (auto& sData : vShaderData)
+            {
+                fwrite(cBuffer, 1, sprintf(cBuffer, "%s\n", sData.c_str()), fShaderInfo);
+            }
+            fclose(fShaderInfo);
+            std::cout << "Shader Data Dumped!" << std::endl;
+        }
+        else std::cout << "Dump shader data failed: couldnt create file!" << std::endl;
+    } 
+    else {
+        std::cout << "Shader Data not found, but will continue unpacking..." << std::endl;
+    }
+    bool bHasShaderInfo = !vShaderData.empty();
+    if(bHasShaderInfo)
+        std::cout << "Shader Data Found, will flag to assigned material!" << std::endl;
+
+    std::cout << "Decoding Base64..." << std::endl;
     macaron::Base64 pBase64;
     std::vector<unsigned char> vMeshData;
     
@@ -154,11 +198,6 @@ int main()
     }
     
     void* pMeshContent = vMeshData.data();
-
-    int iFileName = sFilePath.find_last_of("\\/");
-    std::string sDirectory = sFilePath.substr(0, iFileName + 1);
-
-    std::string sOutputFilePath = sDirectory + sFilePath.substr(iFileName + 1) + ".obj";
 
     FILE* hFileWrite = fopen(sOutputFilePath.c_str(), "w");
     if (!hFileWrite)
@@ -183,6 +222,7 @@ int main()
     int dwTangentOffset = pJson["sr"][0]["ta"].get<int>() * 0x10;
     int dwTangentLength = pJson["sr"][0]["tb"].get<int>() * 0x10;
 
+    
 
 
     fwrite(cWatermark, sizeof(cWatermark) - 1, 1, hFileWrite);
@@ -223,7 +263,10 @@ int main()
         int iIndexEndOffset = iIndexStartOffset + iIndexLength;
 
         fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d\n", i), hFileWrite);
-        fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d\n", i), hFileWrite);
+        if (bHasShaderInfo)
+            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d_%s\n", i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
+        else 
+            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d\n", i), hFileWrite);
 
         for (int n = iIndexStartOffset; n < iIndexEndOffset; n += sizeof(Vector4))
         {
