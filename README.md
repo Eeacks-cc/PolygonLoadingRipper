@@ -8,6 +8,8 @@
 
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
+![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_alteyB2Lb0.png)
+
 贴图转储依旧在研究中...
 
 # 使用方法
