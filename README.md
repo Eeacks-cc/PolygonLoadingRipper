@@ -4,6 +4,8 @@
 
 它可以从下载的模型文件中转储出对应的Mesh。
 
+![原模型](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_KGHca1eHDm.png)
+
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
 贴图转储依旧在研究中...
