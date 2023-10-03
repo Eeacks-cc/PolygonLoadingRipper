@@ -39,7 +39,7 @@ std::string GetPermFilePath()
     static char m_FilePath[MAX_PATH] = { '\0' };
     m_OpenFileName.lpstrFile = m_FilePath;
     m_OpenFileName.nMaxFile = sizeof(m_FilePath);
-    m_OpenFileName.lpstrFilter = "(Perm File)\0*.bin\0";
+    m_OpenFileName.lpstrFilter = "(Binary File)\0*.bin\0";
     m_OpenFileName.Flags = (OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST);
 
     if (GetOpenFileNameA(&m_OpenFileName) == 0)
@@ -214,26 +214,39 @@ int main()
     fwrite(cPadding, sizeof(cPadding) - 1, 1, hFileWrite);
     printf("NORMALS DONE\n");
 
-    for (int i = dwTrianglesOffset; i < dwUVOffset; i += sizeof(Vector4) )
+    int iSubMeshes = pJson["sr"][0]["ss"].size();
+    for (int i = 0; i < iSubMeshes; i++)
     {
-        Vector4 v4Current = *(Vector4*)((uintptr_t)pMeshContent + i);
+        int iIndexStartOffset = pJson["sr"][0]["ss"][i]["st"] * 0x10;
+        int iIndexLength = pJson["sr"][0]["ss"][i]["il"] * 0x10;
 
-        VectorInt4 v4iConverted;
-        v4iConverted.x = static_cast<int>(floor(v4Current.x));
-        v4iConverted.y = static_cast<int>(floor(v4Current.y));
-        v4iConverted.z = static_cast<int>(floor(v4Current.z));
-        v4iConverted.w = static_cast<int>(floor(v4Current.w));
+        int iIndexEndOffset = iIndexStartOffset + iIndexLength;
+
+        fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d\n", i), hFileWrite);
+        fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d\n", i), hFileWrite);
+
+        for (int n = iIndexStartOffset; n < iIndexEndOffset; n += sizeof(Vector4))
+        {
+            Vector4 v4Current = *(Vector4*)((uintptr_t)pMeshContent + n);
+
+            VectorInt4 v4iConverted;
+            v4iConverted.x = static_cast<int>(floor(v4Current.x));
+            v4iConverted.y = static_cast<int>(floor(v4Current.y));
+            v4iConverted.z = static_cast<int>(floor(v4Current.z));
+            v4iConverted.w = static_cast<int>(floor(v4Current.w));
 
 
-        fwrite(cBuffer, sizeof(char), 
-            sprintf(cBuffer, "f %d/%d/%d %d/%d/%d %d/%d/%d\n", 
-                v4iConverted.x + 1, v4iConverted.x + 1, v4iConverted.x + 1,
-                v4iConverted.y + 1, v4iConverted.y + 1, v4iConverted.y + 1,
-                v4iConverted.z + 1, v4iConverted.z + 1, v4iConverted.z + 1),
-        hFileWrite);
+            fwrite(cBuffer, sizeof(char),
+                sprintf(cBuffer, "f %d/%d/%d %d/%d/%d %d/%d/%d\n",
+                    v4iConverted.x + 1, v4iConverted.x + 1, v4iConverted.x + 1,
+                    v4iConverted.y + 1, v4iConverted.y + 1, v4iConverted.y + 1,
+                    v4iConverted.z + 1, v4iConverted.z + 1, v4iConverted.z + 1),
+                hFileWrite);
 
+        }
+        fwrite(cPadding, sizeof(cPadding) - 1, 1, hFileWrite);
     }
-    fwrite(cPadding, sizeof(cPadding) - 1, 1, hFileWrite);
+
     printf("TRIANGLES DONE\n");
 
     fclose(hFileWrite);
