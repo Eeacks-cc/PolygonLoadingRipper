@@ -2,15 +2,21 @@
 
 我使用了 [这张地图](https://vrchat.com/home/world/wrld_057b9b0f-a9c1-4f3c-b002-058a658e2217) 作为调试目标，逆向工程了其中的Polygon Loading
 
-它可以从下载的模型文件中转储出对应的Mesh以及自动分组SubMesh，这将允许你正确给每个部位添加正确的贴图。
-
+## 原始示例
 ![原模型](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_KGHca1eHDm.png)
 
+## 转储之后
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
+## 手动修复之后(未使用任何正确的Shader)
 ![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_alteyB2Lb0.png)
 
 贴图转储依旧在研究中...
+
+# 功能
+- 从模型文件中转储出对应的Mesh。
+- 自动分组SubMesh，这允许你正确给每个部位添加正确的贴图。
+- 转储Shader信息(x.bin.shaderinfo.txt)。(正在编写中...)
 
 # 使用方法
 0. 自己编译本库或者从 Release 下载编译好的二进制文件。
