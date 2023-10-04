@@ -17,7 +17,7 @@
 - 从模型文件中转储出对应的Mesh，Shader信息。
 - 自动分组SubMesh(基本上是untiy的单个material)，并在material名字中附带shader名字。
 - 转储Shader信息(x.bin.shaderinfo.txt)。
-- 转储重命名后的Json信息，可以帮助修复模型(x.bin.modelInfo.json)。
+- 转储重命名后的Json信息，可以帮助修复模型(x.bin.modelInfo.json)。 (编写中...) 可以通过阅读 3b859834d2847b665c68_InfoString.json 来知道这些json成员都代表什么意思
 
 # 使用方法
 0. 自己编译本库或者从 Release 下载编译好的二进制文件。
