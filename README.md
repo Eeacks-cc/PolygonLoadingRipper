@@ -10,7 +10,7 @@
 ## 转储之后
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
-## 手动修复之后(未使用任何正确的Shader)
+## 手动修复之后(未使用任何Shader)
 ![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_alteyB2Lb0.png)
 
 ## 手动修复之后(使用Poiyomi 8.0)
