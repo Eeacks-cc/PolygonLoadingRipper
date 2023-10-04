@@ -49,6 +49,20 @@ std::string GetPermFilePath()
     return m_OpenFileName.lpstrFile;
 }
 
+// not implemented yet... no clue
+// read 3b859834d2847b665c68_InfoString.json will help you
+void RenameJson()
+{
+    pJson["sr"][0]["position"] = pJson["sr"][0]["po"];
+    pJson.erase(pJson["sr"][0]["po"]);
+
+    pJson["sr"][0]["rotation"] = pJson["sr"][0]["ro"];
+    pJson.erase(pJson["sr"][0]["ro"]);
+
+    pJson["sr"][0]["scale"] = pJson["sr"][0]["sc"];
+    pJson.erase(pJson["sr"][0]["sc"]);
+}
+
 int main()
 {
     std::cout << "waiting for file..." << std::endl;
@@ -222,9 +236,6 @@ int main()
     int dwTangentOffset = pJson["sr"][0]["ta"].get<int>() * 0x10;
     int dwTangentLength = pJson["sr"][0]["tb"].get<int>() * 0x10;
 
-    
-
-
     fwrite(cWatermark, sizeof(cWatermark) - 1, 1, hFileWrite);
     fwrite(cPadding, sizeof(cPadding) - 1, 1, hFileWrite);
     for (int i = dwVertexOffset; i < dwVertexOffset + dwVertexLength; i += sizeof(Vector4))
@@ -294,6 +305,9 @@ int main()
 
     fclose(hFileWrite);
     printf("ALL DONE\n");
-
+    /*
+    std::cout << "Renaming JSON" << std::endl;
+    RenameJson();
+    */
     system("pause");
 }
