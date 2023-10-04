@@ -273,12 +273,17 @@ int main()
 
         int iIndexEndOffset = iIndexStartOffset + iIndexLength;
 
-        fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d\n", i), hFileWrite);
+        
         if (bHasShaderInfo)
+        {
+            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d_%s\n", i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
             fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d_%s\n", i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
-        else 
+        }
+        else
+        {
+            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d\n", i), hFileWrite);
             fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d\n", i), hFileWrite);
-
+        }
         for (int n = iIndexStartOffset; n < iIndexEndOffset; n += sizeof(Vector4))
         {
             Vector4 v4Current = *(Vector4*)((uintptr_t)pMeshContent + n);
