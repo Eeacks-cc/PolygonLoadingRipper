@@ -2,6 +2,8 @@
 
 我使用了 [这张地图](https://vrchat.com/home/world/wrld_057b9b0f-a9c1-4f3c-b002-058a658e2217) 作为调试目标，逆向工程了其中的Polygon Loading
 
+![polygonloading](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_e6WbXY4pi1.png)
+
 ## 原始示例
 ![原模型](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_KGHca1eHDm.png)
 
