@@ -11,6 +11,9 @@
 ## 手动修复之后(未使用任何正确的Shader)
 ![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_alteyB2Lb0.png)
 
+## 手动修复之后(使用Poiyomi 8.0)
+![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/Unity_MRsiyXfecs.png)
+
 贴图转储依旧在研究中...
 
 # 功能
