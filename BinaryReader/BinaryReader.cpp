@@ -5,30 +5,16 @@
 #include "json.hpp"
 #include "base64.h"
 
-struct Vector4
-{
-    float x;
-    float y;
-    float z;
-    float w;
-};
+#include "defines.h"
+#include "CSConverterScript.h"
 
-
-struct VectorInt4
-{
-    int x;
-    int y;
-    int z;
-    int w;
-};
-
-
-char cBuffer[1024] = {0};
+char cBuffer[4096] = {0};
 
 char cWatermark[] = { "# keter.tech - polygon loading ripper " };
 char cPadding[] = { "\n\n" };
 
 nlohmann::json pJson;
+macaron::Base64 pBase64;
 
 std::string GetPermFilePath()
 {
@@ -199,10 +185,80 @@ int main()
     if(bHasShaderInfo)
         std::cout << "Shader Data Found, will flag to assigned material!" << std::endl;
 
-    std::cout << "Decoding Base64..." << std::endl;
-    macaron::Base64 pBase64;
-    std::vector<unsigned char> vMeshData;
+    std::cout << "Preparing Texture..." << std::endl;
+    std::string sTextureData = sContent.substr(iMeshEnd);
+    std::vector<std::string> vTextures;
+    if (!sTextureData.empty())
+    {
+        std::string sSplit;
+        int iLastLength = 0;
+        
+        std::cout << "Creating Folder for textures..." << std::endl;
+        std::string sTextureFolder = sDirectory + std::string("Textures");
+        CreateDirectoryA(sTextureFolder.c_str(), nullptr);
+        
+        nlohmann::json pOutJson;
+
+        // first element in array is ignored since its not fucking texture data its literally full of mesh data its just trolling???
+        for (int i = 1; i < pJson["tf"].size(); i++)
+        {
+            eTextureFormat iTextureFormat = (eTextureFormat)pJson["tf"][i]["tt"].get<int>();
+            if (iTextureFormat != DXT1Crunched && iTextureFormat != DXT5Crunched)
+            {
+                std::cout << "format not supported yet, skipping Texture " << i << std::endl;
+                continue;
+            }
+            printf("Texutre %i: width: %d | height: %i | \n", i, pJson["tf"][i]["wt"].get<int>(), pJson["tf"][i]["he"].get<int>());
+
+            std::string sTextureFile = sTextureFolder + "\\texture_" + std::to_string(i) + ".txt";
+
+            pOutJson["Textures"][i - 1]["iWidth"] = pJson["tf"][i]["wt"].get<int>();
+            pOutJson["Textures"][i-1]["iHeight"] = pJson["tf"][i]["he"].get<int>();
+            pOutJson["Textures"][i-1]["iTextureFormat"] = pJson["tf"][i]["tt"].get<int>();
+            pOutJson["Textures"][i-1]["bMipChain"] = pJson["tf"][i]["mc"].get<bool>();
+            pOutJson["Textures"][i-1]["bLinear"] = pJson["tf"][i]["lr"].get<bool>();
+            pOutJson["Textures"][i-1]["sPath"] = sTextureFile;
+
+            std::string sTexture = sTextureData.substr(iLastLength, pJson["tf"][i]["bl"].get<int>());
+            vTextures.push_back(sTexture);
+            iLastLength += pJson["tf"][i]["bl"].get<int>();
+            
+            auto f = fopen(sTextureFile.c_str(), "w");
+            fwrite(sTexture.c_str(), 1, sTexture.size(), f);
+            fclose(f);
+        }
+        std::cout << "Texture Data all dumped at folder .\\Textures" << std::endl;;
+
+        std::cout << "Generating Unity C# Script for converting to image file..." << std::endl;;
+        std::string sOutputJson = pOutJson.dump();
+        
+        // fix for c#
+        size_t szOffset = sOutputJson.find("\"");
+        while (szOffset != std::string::npos) {
+            sOutputJson.replace(szOffset, 1, "\"\"");
+            szOffset = sOutputJson.find("\"", szOffset + 2);
+        }
+
+        std::string sScriptPath = sDirectory + "\\Textures\\TextureLoader.cs";
+        auto fScript = fopen(sScriptPath.c_str(), "w");
+        int iAllocateSize = strlen(pScript) + sOutputJson.size() + 2;
+        char* pBuff = (char*)malloc(iAllocateSize);
+        if (pBuff)
+        {
+            memset(pBuff, 0x0, iAllocateSize);
+            fwrite(pBuff, 1, sprintf(pBuff, pScript, sOutputJson.c_str()), fScript);
+            fclose(fScript);
+            free(pBuff);
+            std::cout << "Script is written at .\\Textures\\TextureLoader.cs" << std::endl;
+            std::cout << "[#] Usage: Drag Script to Unity Editor, run the play mode, Unity Console will shows [PolygonRipper] prefix message" << std::endl;
+        }
+        else std::cout << "Script Allocate failed, ignored..." << std::endl;
+    }
+    else std::cout << "Texture Data not found, ignored" << std::endl;
+
+    std::cout << "Decoding ALL..." << std::endl;
     
+    std::vector<unsigned char> vMeshData;
     pBase64.Decode(sMesh, vMeshData);
 
     if (vMeshData.empty())
@@ -276,7 +332,15 @@ int main()
         
         if (bHasShaderInfo)
         {
-            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "g sm_%d_%s\n", i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
+            std::string sFormatString = "g sm_%d_%s_tex_";
+            std::string sFormatString1 = "usemtl material_%d_%s_tex_";
+            for (int k = 0; k < pJson["sm"][0]["sp"]["ti"].size(); k++)
+            {
+                sFormatString += std::to_string(pJson["sm"][0]["sp"]["ti"][k].get<int>()) + (k + 1 == pJson["sm"][0]["sp"]["ti"].size() ? "\n" : "-");
+                sFormatString1 += std::to_string(pJson["sm"][0]["sp"]["ti"][k].get<int>()) + (k + 1 == pJson["sm"][0]["sp"]["ti"].size() ? "\n" : "-");
+            }
+
+            fwrite(cBuffer, sizeof(char), sprintf(cBuffer, sFormatString.c_str(), i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
             fwrite(cBuffer, sizeof(char), sprintf(cBuffer, "usemtl material_%d_%s\n", i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
         }
         else
