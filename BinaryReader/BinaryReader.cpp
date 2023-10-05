@@ -337,8 +337,8 @@ int main()
             int iTextureSize = pJson["sm"][i]["sp"]["ti"].size();
             if (!iTextureSize)
             {
-                sFormatString = "g sm_%d_%s";
-                sFormatString1 = "g usemtl material_%d_%s";
+                sFormatString = "g sm_%d_%s\n";
+                sFormatString1 = "g usemtl material_%d_%s\n";
             }
             for (int k = 0; k < iTextureSize; k++)
             {
