@@ -333,10 +333,12 @@ int main()
         {
             std::string sFormatString = "g sm_%d_%s_tex_";
             std::string sFormatString1 = "usemtl material_%d_%s_tex_";
-            for (int k = 0; k < pJson["sm"][0]["sp"]["ti"].size(); k++)
+
+            int iTextureSize = pJson["sm"][i]["sp"]["ti"].size();
+            for (int k = 0; k < iTextureSize; k++)
             {
-                sFormatString += std::to_string(pJson["sm"][0]["sp"]["ti"][k].get<int>()) + (k + 1 == pJson["sm"][0]["sp"]["ti"].size() ? "\n" : "-");
-                sFormatString1 += std::to_string(pJson["sm"][0]["sp"]["ti"][k].get<int>()) + (k + 1 == pJson["sm"][0]["sp"]["ti"].size() ? "\n" : "-");
+                sFormatString += std::to_string(pJson["sm"][i]["sp"]["ti"][k].get<int>()) + (k + 1 == iTextureSize ? "\n" : "-");
+                sFormatString1 += std::to_string(pJson["sm"][i]["sp"]["ti"][k].get<int>()) + (k + 1 == iTextureSize ? "\n" : "-");
             }
 
             fwrite(cBuffer, sizeof(char), sprintf(cBuffer, sFormatString.c_str(), i, vShaderData[pJson["sm"][i]["sn"]].c_str()), hFileWrite);
