@@ -335,6 +335,11 @@ int main()
             std::string sFormatString1 = "usemtl material_%d_%s_tex_";
 
             int iTextureSize = pJson["sm"][i]["sp"]["ti"].size();
+            if (!iTextureSize)
+            {
+                sFormatString = "g sm_%d_%s";
+                sFormatString1 = "g usemtl material_%d_%s";
+            }
             for (int k = 0; k < iTextureSize; k++)
             {
                 sFormatString += std::to_string(pJson["sm"][i]["sp"]["ti"][k].get<int>()) + (k + 1 == iTextureSize ? "\n" : "-");
