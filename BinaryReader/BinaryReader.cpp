@@ -134,23 +134,16 @@ int main()
         return 0;
     }
 
-    std::string ;
-
     std::string sContent = sRawFile.substr(iContentBegin);
    
     std::cout << "Preparing MeshInfo" << std::endl;
-    int iMeshEnd = sContent.find("A=");
-    if (iMeshEnd == std::string::npos)
+
+    // retard
+    int iMeshEnd = pJson["tf"][0]["bl"];
+    if (!iMeshEnd)
     {
         std::cout << "Mesh not found." << std::endl;
         return 0;
-    }
-
-    // "A==" = 3
-    iMeshEnd += 2;
-    if (sContent[iMeshEnd] == '=')
-    {
-        iMeshEnd++;
     }
 
     std::string sMesh = sContent.substr(0, iMeshEnd);
