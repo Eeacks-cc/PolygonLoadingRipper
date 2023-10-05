@@ -250,7 +250,6 @@ int main()
             fclose(fScript);
             free(pBuff);
             std::cout << "Script is written at .\\Textures\\TextureLoader.cs" << std::endl;
-            std::cout << "[#] Usage: Drag Script to Unity Editor, run the play mode, Unity Console will shows [PolygonRipper] prefix message" << std::endl;
         }
         else std::cout << "Script Allocate failed, ignored..." << std::endl;
     }
