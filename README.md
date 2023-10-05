@@ -48,7 +48,7 @@
 
 0. 根据前文中的内容，你应该有了模型Mesh以及完整的贴图，将其全部导入Unity。
 1. 在 Unity 资源选项卡 中选择 .obj 的模型文件，在 Inspector 窗口中的 Materials 选项卡中查看 Remapped Materials
-2. 其中的每个 material 的命名格式包含了一些信息，格式如下： sm_id_shadername_tex_x-x-x 其中 sm 为 submesh，id 为 导出时的顺序，shadername 为使用的着色器名字，tex 为对应的贴图id 然后紧跟着贴图id的编号
+2. 其中的每个 material 的命名格式包含了一些信息，格式如下： `sm_id_shadername_tex_x-x-x` 其中 sm 为 submesh，id 为 导出时的顺序，shadername 为使用的着色器名字，tex 为对应的贴图id 然后紧跟着贴图id的编号，如果没有出现 `tex_x-x-x` 则代表这个 material 没有使用任何贴图。
 3. 点击 Inspector 窗口中的 Extract Materials 将生成 material 并自动填充至模型。
 4. 将贴图按照 material 名字中的 tex_x-x-x 编号设置。例如名字中的 tex_1-1-1 意味着导入了三次 texture_1 作为不同的shader属性贴图(尚未查明)。
 5. 依次类推给所有 material 加入贴图并且正确的设置 shader。
