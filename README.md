@@ -4,17 +4,14 @@
 
 ![polygonloading](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_e6WbXY4pi1.png)
 
-## 原始示例
+## 游戏内
 ![原模型](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/VRChat_KGHca1eHDm.png)
 
 ## 转储之后
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
-## 手动修复之后(未使用任何Shader)
-![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_alteyB2Lb0.png)
-
-## 手动修复之后(使用Poiyomi 8.0)
-![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/Unity_MRsiyXfecs.png)
+## 修复之后(使用Poiyomi 8.0)
+![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/Unity_6DRsoYuInv.png)
 
 # 功能
 - 从模型文件中转储出对应的Mesh，Shader信息。
