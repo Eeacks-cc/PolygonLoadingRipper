@@ -11,7 +11,9 @@
 ![截图](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/blender_GWBcF6r26v.png)
 
 ## 修复之后(使用Poiyomi 8.0)
-![手动修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/Unity_6DRsoYuInv.png)
+![修复之后](https://raw.githubusercontent.com/KeterTech/PolygonLoadingRipper/master/screenshots/Unity_6DRsoYuInv.png)
+
+_可根据自己喜好酌情调整着色器设置_
 
 # 功能
 - 从模型文件中转储出对应的Mesh，Shader信息。
