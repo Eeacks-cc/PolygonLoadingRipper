@@ -51,7 +51,9 @@ _可根据自己喜好酌情调整着色器设置_
 2. 其中的每个 material 的命名格式包含了一些信息，格式如下： `sm_id_shadername_tex_x-x-x` 其中 sm 为 submesh，id 为 导出时的顺序，shadername 为使用的着色器名字，tex 为对应的贴图id 然后紧跟着贴图id的编号，如果没有出现 `tex_x-x-x` 则代表这个 material 没有使用任何贴图。
 3. 点击 Inspector 窗口中的 Extract Materials 将生成 material 并自动填充至模型。
 4. 将贴图按照 material 名字中的 tex_x-x-x 编号设置。例如名字中的 tex_1-1-1 意味着导入了三次 texture_1 作为不同的shader属性贴图(尚未查明)。
-5. 依次类推给所有 material 加入贴图并且正确的设置 shader。
+5. 以此类推给所有 material 加入贴图并且正确的设置 shader。
+
+你可以查看贴图本身来确定贴图的作用，根据我的测试，贴图中如果顺序为 1-2-1 之类的，很可能2号贴图是一个normal map
 
 # 注意
 
