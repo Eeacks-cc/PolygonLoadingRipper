@@ -10,7 +10,7 @@
 
 char cBuffer[4096] = {0};
 
-char cWatermark[] = { "# keter.tech - polygon loading ripper " };
+char cWatermark[] = { "# keter.tech - polygon loading ripper\n # https://github.com/KeterTech/PolygonLoadingRipper " };
 char cPadding[] = { "\n\n" };
 
 nlohmann::json pJson;
