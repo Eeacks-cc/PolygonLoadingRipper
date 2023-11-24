@@ -139,7 +139,7 @@ int main()
     std::cout << "Preparing MeshInfo" << std::endl;
 
     // retard
-    int iMeshEnd = pJson["tf"][0]["bl"];
+    int iMeshEnd = pJson["tf"][0]["bq"];
     if (!iMeshEnd)
     {
         std::cout << "Mesh not found." << std::endl;
@@ -195,26 +195,26 @@ int main()
         // first element in array is ignored since its not fucking texture data its literally full of mesh data its just trolling???
         for (int i = 1; i < pJson["tf"].size(); i++)
         {
-            eTextureFormat iTextureFormat = (eTextureFormat)pJson["tf"][i]["tt"].get<int>();
+            eTextureFormat iTextureFormat = (eTextureFormat)pJson["tf"][i]["xt"].get<int>();
             if (iTextureFormat != DXT1Crunched && iTextureFormat != DXT5Crunched)
             {
                 std::cout << "format not supported yet, skipping Texture " << i << std::endl;
                 continue;
             }
-            printf("Texutre %i: width: %d | height: %i | \n", i, pJson["tf"][i]["wt"].get<int>(), pJson["tf"][i]["he"].get<int>());
+            printf("Texutre %i: width: %d | height: %i | \n", i, pJson["tf"][i]["lr"].get<int>(), pJson["tf"][i]["he"].get<int>());
 
             std::string sTextureFile = sTextureFolder + "\\texture_" + std::to_string(i) + ".txt";
 
-            pOutJson["Textures"][i - 1]["iWidth"] = pJson["tf"][i]["wt"].get<int>();
+            pOutJson["Textures"][i - 1]["iWidth"] = pJson["tf"][i]["lr"].get<int>();
             pOutJson["Textures"][i-1]["iHeight"] = pJson["tf"][i]["he"].get<int>();
-            pOutJson["Textures"][i-1]["iTextureFormat"] = pJson["tf"][i]["tt"].get<int>();
-            pOutJson["Textures"][i-1]["bMipChain"] = pJson["tf"][i]["mc"].get<bool>();
-            pOutJson["Textures"][i-1]["bLinear"] = pJson["tf"][i]["lr"].get<bool>();
+            pOutJson["Textures"][i-1]["iTextureFormat"] = pJson["tf"][i]["xt"].get<int>();
+            pOutJson["Textures"][i-1]["bMipChain"] = pJson["tf"][i]["wm"].get<bool>();
+            pOutJson["Textures"][i-1]["bLinear"] = pJson["tf"][i]["wt"].get<bool>();
             pOutJson["Textures"][i-1]["sPath"] = sTextureFile;
 
-            std::string sTexture = sTextureData.substr(iLastLength, pJson["tf"][i]["bl"].get<int>());
+            std::string sTexture = sTextureData.substr(iLastLength, pJson["tf"][i]["bq"].get<int>());
             vTextures.push_back(sTexture);
-            iLastLength += pJson["tf"][i]["bl"].get<int>();
+            iLastLength += pJson["tf"][i]["bq"].get<int>();
             
             auto f = fopen(sTextureFile.c_str(), "w");
             fwrite(sTexture.c_str(), 1, sTexture.size(), f);
@@ -272,17 +272,17 @@ int main()
 
     int dwTrianglesOffset = 0;
     
-    int dwUVOffset = pJson["sr"][0]["us"].get<int>() * 0x10;
+    int dwUVOffset = pJson["sr"][0]["tb"].get<int>() * 0x10;
     int dwUVLength = pJson["sr"][0]["ul"].get<int>() * 0x10;
     
-    int dwVertexOffset = pJson["sr"][0]["vs"].get<int>() * 0x10;
-    int dwVertexLength = pJson["sr"][0]["vl"].get<int>() * 0x10;
+    int dwVertexOffset = pJson["sr"][0]["nl"].get<int>() * 0x10;
+    int dwVertexLength = pJson["sr"][0]["ta"].get<int>() * 0x10;
     
-    int dwNormalOffset = pJson["sr"][0]["ns"].get<int>() * 0x10;
-    int dwNormalLength = pJson["sr"][0]["nl"].get<int>() * 0x10;
+    int dwNormalOffset = pJson["sr"][0]["ua"].get<int>() * 0x10;
+    int dwNormalLength = pJson["sr"][0]["vs"].get<int>() * 0x10;
     
-    int dwTangentOffset = pJson["sr"][0]["ta"].get<int>() * 0x10;
-    int dwTangentLength = pJson["sr"][0]["tb"].get<int>() * 0x10;
+    int dwTangentOffset = pJson["sr"][0]["vl"].get<int>() * 0x10;
+    int dwTangentLength = pJson["sr"][0]["us"].get<int>() * 0x10;
 
     fwrite(cWatermark, sizeof(cWatermark) - 1, 1, hFileWrite);
     fwrite(cPadding, sizeof(cPadding) - 1, 1, hFileWrite);
