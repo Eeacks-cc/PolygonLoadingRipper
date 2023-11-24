@@ -22,11 +22,11 @@ _可根据自己喜好酌情调整着色器设置_
 - 转储原始贴图内容，并生成转换脚本(需要Unity，见下文 贴图转换和导入)
 
 # 使用方法
-0. 自己编译本库或者从 Release 下载编译好的二进制文件。
+0. 克隆本库并(&&)从 Release 下载或(||)自行编译，确保本库中的`BinaryReader.exe`位于根目录。
 1. 运行 request_list.bat 文件下载模型列表(你必须在电脑上拥有curl)。
 2. 下载完毕之后会在运行目录下出现一个 ModelList.json 里面可能包含大量预览图数据(未证实)，你需要提取其中的json。(建议使用vscode，对于大文件有优化)
-3. 在清理后的 ModelList.json 中找到你喜欢的模型，其中元素"fn"是该模型的二进制文件在他们服务器上的链接。
-4. 完整复制下来(例如:123456789.bin)，然后编辑 request_model.bat 将其中链接和-o参数的 x.bin 替换为复制的文件名。
+3. 在清理后的 ModelList.json 中找到你喜欢的模型，其中元素"tf"是该模型的文件名。
+4. 从中仅复制ID(例如:691623fa5819625c6e5e)，然后编辑 request_model.bat 将其中第一行的 `set file=691623fa5819625c6e5e` 的等于号后面的ID更换为复制的ID。
 5. 运行 request_model.bat 然后会在目录下下载得到对应的模型文件。
 6. 运行 BinaryReader.exe 并且选择该文件。
 7. 目录下应该会出现一个 x.bin.obj 文件，导入Blender或者Unity，你现在有了它。
