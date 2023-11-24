@@ -69,18 +69,24 @@ public static class TextureLoader
 		{
 			string sBase64Texture = File.ReadAllText(Texture.sPath);
 		
-			byte[] TextureData = Convert.FromBase64String(sBase64Texture);
-			
-			pT2D = new Texture2D(Texture.iWidth, Texture.iHeight, (TextureFormat)Texture.iTextureFormat, Texture.bMipChain, Texture.bLinear);
-			pT2D.LoadRawTextureData(TextureData);
-			pT2D.Apply();
-			pT2D.wrapMode = TextureWrapMode.Repeat;
-			
-			Texture2D pT2DDecompressed = DeCompress(pT2D);
-			
-			string sOutputPath = Texture.sPath + ".png";
-			File.WriteAllBytes(sOutputPath, pT2DDecompressed.EncodeToPNG());
-			File.Delete(Texture.sPath);
+			try {
+				byte[] TextureData = Convert.FromBase64String(sBase64Texture);
+				
+				pT2D = new Texture2D(Texture.iWidth, Texture.iHeight, (TextureFormat)Texture.iTextureFormat, Texture.bMipChain, Texture.bLinear);
+				pT2D.LoadRawTextureData(TextureData);
+				pT2D.Apply();
+				pT2D.wrapMode = TextureWrapMode.Repeat;
+				
+				Texture2D pT2DDecompressed = DeCompress(pT2D);
+				
+				string sOutputPath = Texture.sPath + ".png";
+				File.WriteAllBytes(sOutputPath, pT2DDecompressed.EncodeToPNG());
+				File.Delete(Texture.sPath);
+			}
+			catch(Exception ex)
+			{
+				continue;
+			}
 		}
 		Debug.Log("[PolygonRipper] Texture Converted!");
     }
