@@ -31,6 +31,8 @@ _可根据自己喜好酌情调整着色器设置_
 6. 运行 BinaryReader.exe 并且选择该文件。
 7. 目录下应该会出现一个 x.bin.obj 文件，导入Blender或者Unity，你现在有了它。
 
+`注意：本库中唯一包含的二进制文件为 gunzip 原版文件于(2007)年构建的版本，可以对比任何哈希。(https://sourceforge.net/projects/gnuwin32/)`
+
 # 贴图转换和导入
 ## 贴图转换
 由于贴图具有Crunch压缩并且使用了DXT格式，我没能研究明白如何解压，我决定转变思路。
